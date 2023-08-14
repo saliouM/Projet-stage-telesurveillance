@@ -8,8 +8,6 @@ from bs4 import BeautifulSoup
 import requests
 import cv2
 import subprocess
-#from pydrive.auth import GoogleAuth 
-#from pydrive.drive import GoogleDrive
 
 
 
@@ -25,7 +23,7 @@ class Acceuil:
         self.icon=self.icon.resize(self.icon_size)
         self.icon_image=ImageTk.PhotoImage(self.icon)
         icon_title=Label(self.root, text="TELESURVEILLANCE",image=self.icon_image,font=("times new roman",16,"bold"),width=1600, bg="cyan",anchor="w",padx=20,compound=LEFT).place(x=0,y=0)
-        #self.root.add_commande(label="Télésurveillance",image=self.icon_image,compound=LEFT)
+        
         
         #button_menu_barre
         btn_flux_image=Button(self.root,text="Flux images", font=("times new roman",16),cursor="hand2",bg="blue",width=16,command=self.windows_flux_images).place(x=600,y=7)
@@ -146,7 +144,6 @@ class Acceuil:
                                     file_path = os.path.join(self.folder_path, filename)
                                     os.remove(file_path)
                                     print(f"Fichier {file_path} supprimé avec succès.")
-                                    #messagebox.showwarning("Danger",f"supprimer aussi  '{filename}' du server local ! ",parent=self.root)
                         messagebox.showinfo("Succes","Images supprimées du server local avec succès.",parent=self.root)
                         self.image_listbox.delete(0, END)
                     except OSError as e:
@@ -186,10 +183,6 @@ class Acceuil:
             soup = BeautifulSoup(response.text, 'html.parser')
             self.video_list = [a['href'] for a in soup.find_all('a') if a['href'] != '/../']
             return self.video_list
-
-
-
-
 
 
 
