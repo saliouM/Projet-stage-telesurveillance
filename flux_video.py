@@ -15,12 +15,6 @@ from botocore.exceptions import NoCredentialsError
 import paramiko
 import subprocess
 import threading
-#from tkinterweb import WebView  
-#import webbrowser
-#import pywebview
-#import pywebview
-
-
 
 
 
@@ -137,7 +131,7 @@ class StreamingVideo:
         host = self.entry_ip_adress.get()  # Adresse IP de votre Arduino Yun
         port = 22 # Port SSH
         username = "root"  # Nom d'utilisateur (peut être différent)
-        password = "arduinoyun"  # Mot de passe SSH
+        password = "passarduino"  # Mot de passe SSH
         
         # Commande à exécuter
         command = 'mjpg_streamer -i "input_uvc.so -d /dev/video0 -r 800x480 -f 25" -o "output_http.so -p 8080 -w /www/webcam"'
@@ -161,7 +155,7 @@ class StreamingVideo:
         host = self.entry_ip_adress.get()  # Adresse IP de votre Arduino Yun
         port = 22 # Port SSH
         username = "root"  # Nom d'utilisateur (peut être différent)
-        password = "arduinoyun"  # Mot de passe SSH
+        password = "passarduino"  # Mot de passe SSH
         
          #Commande pour arrêter le processus mjpg_streamer
         stop_command = 'killall mjpg_streamer'
@@ -173,10 +167,6 @@ class StreamingVideo:
             
             # Exécuter la commande
             stdin, stdout, stderr = ssh.exec_command(stop_command)
-            # Afficher la sortie de la commande
-            #print(stdout.read().decode())
-            #messagebox.showinfo("Succès",f" Info: {stdout.read().decode()}",parent=self.root)
-            # Fermer la connexion SSH
             ssh.close()
             messagebox.showinfo("Arrêt du streaming", "Le streaming a été arrêté.", parent=self.root)
         except paramiko.AuthenticationException:
@@ -220,9 +210,9 @@ class StreamingVideo:
     #dowload to AWS S3
     def upload_to_aws_s3(self, nameImg, file_path):
         # Configurer les informations d'authentification AWS
-        self.ACCESS_KEY_ID='AKIASUBTV6DHQRCAHROM'
-        self.ACCESS_SECRET_KEY='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'
-        bucket_name = 'bucketsaliou'
+        self.ACCESS_KEY_ID='aws_key'
+        self.ACCESS_SECRET_KEY='aws_secret_key'
+        bucket_name = 'your_buket_name'
 
         s3 = boto3.client('s3', aws_access_key_id=self.ACCESS_KEY_ID, aws_secret_access_key=self.ACCESS_SECRET_KEY)
 
@@ -259,16 +249,10 @@ class StreamingVideo:
     def start_streaming(self):
         self.streaming = True
         self.url_video=f"http://{self.entry_ip_adress.get()}:{self.entry_port.get()}/?action=stream"
-        #self.web_view.set_url(self.url_video)  # Chargez l'URL dans le WebView
         self.video_capture = cv2.VideoCapture(self.url_video)
         self.stream_thread = threading.Thread(target=self.update_stream)
         self.stream_thread.start()
-            #while True:
-            #ret, frame = cap.read()
-            #if not ret:
-               # break
-
-            #cv2.imshow('OBS Stream', frame)
+            
 
     
     #update streaming
@@ -356,14 +340,13 @@ class StreamingVideo:
     def arreter_minuterie(self):
             self.minuterie_active = False
             self.temps_ecoule = 0
-            #self.notify_start_stream.config(text="")
+            
             
     # Start enregistrement    
     def start_recording(self):
         self.recording = True
         
         self.output_writer = cv2.VideoWriter(f'Video_{int(time.time())}.avi', cv2.VideoWriter_fourcc(*'XVID'), 25, (800, 480))
-        #self.output_writer = cv2.VideoWriter('output1.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 25, (800, 480))
 
     #Stop enregistrement
     def stop_recording(self):
@@ -378,119 +361,16 @@ class StreamingVideo:
     #Stop streaming
     def stop_streaming(self):
         self.streaming = False
-        #self.web_view.set_url("")  # Effacez le contenu du WebView
         if self.video_capture is not None:
             self.video_capture.release()
             self.clear_video_frame()
-            #self.video_label.config(image=None)
-        
-        #if cv2.waitKey(1) & 0xFF == ord('q'):
-            #break
 
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-    #Mise a jour images
-    #def browse_server_video(self):
-            #self.server_ip=self.entry_ip_adress.get()
-            #self.port=self.entry_port.get()
-            #self.server_url = f"http://{self.server_ip}:{self.port}"
-            #response = requests.get(self.server_url)
-            #if response.status_code != 200:
-                #print("Échec de la connexion au serveur.")
-                #return response
-
-            #soup = BeautifulSoup(response.text, 'html.parser')
-            #self.image_list = [a['href'] for a in soup.find_all('a') if a['href'] != '/../']
-            #return self.image_list
-        
-   
-    #Au clique de la listbox affiche les images
-    #def on_listbox_click(self,event):
-    #        selected_index = self.image_listbox.curselection()
-    #        if selected_index:
-    #            self.image_name = self.image_listbox.get(selected_index[0])
-    #            self.image_path = self.download_image(f"http://{self.entry_ip_adress.get()}:{self.entry_port.get()}/{self.image_name}", self.image_name)
-                #self.on_image_click(self.image_path)
-    #            self.display_selected_image(self.image_path)
-
-    
-    #Delette images      
-    #def delete_image(self,nameImg):
-            # Supprimer le fichier local après le téléversement
-            #self.result = messagebox.askyesno("Confirmation", "Êtes-vous sûr de vouloir supprimer cette image?",parent=self.root)
-            #if self.result:
-                #os.remove(nameImg)
-                #print("Image supprimée du serveur local.")
-                #messagebox.showinfo("Succes","Image supprimée du server local.",parent=self.root)  
-              
-    #def on_delete_button_click(self):
-            #selected_index = self.image_listbox .curselection()
-            #if selected_index:
-                        #self.image_name = self.image_listbox.get(selected_index[0])
-                        #self.delete_image(self.image_name)
-                        #self.list_server_images()
-                        
-    
-    #Suppression des images enrégistrée localement
-    #def delete_all_jpg_files(self):
-            #self.folder_path = "C:/Users/wilfr/Desktop/Logiciel/"
-            #self.result = messagebox.askyesno("Confirmation", "Êtes-vous sûr de vouloir supprimer ces images?",parent=self.root)
-           # if self.result:
-            #        try:
-                        
-             #           for filename in os.listdir(self.folder_path):
-              #                  if filename.endswith(".jpg"):
-               #                     file_path = os.path.join(self.folder_path, filename)
-                #                    os.remove(file_path)
-                 #                   print(f"Fichier {file_path} supprimé avec succès.")
-                  #                  #messagebox.showwarning("Danger",f"supprimer aussi  '{filename}' du server local ! ",parent=self.root)
-                   #     messagebox.showinfo("Succes","Images supprimées du server local avec succès.",parent=self.root)
-                    #    self.image_listbox.delete(0, END)
-               #     except OSError as e:
-                #            print(f"Erreur lors de la suppression des fichiers : {e}")
-                 #           messagebox.showerror("Erreur","Erreur de suppression des images du server local.",parent=self.root)
-
-    
-    ##Télécharger AU clique de l'images
-    #def on_upload_button_click(self):
-    #    selected_index = self.image_listbox.curselection()
-    #    if selected_index:
-    #        self.image_name = self.image_listbox.get(selected_index[0])
-    #        self.upload_to_google_drive(self.image_name)
-
-
-    #fénètre responsive en cours d'adaptation
     def on_window_resize(self, event):
-        # Ajuster les widgets en réponse au changement de taille de fenêtre
-        #self.icon_title.config(width=event.width)
         self.lbl_heure.config(width=event.width)
-        #self.lbl_ip_adress.config(width=event.width)
-        #self.input_ip.config(width=event.width  // 15)
-        #self.lbl_ip_adress.config(width=event.width)
-        #self.input_port.config(width=event.width)
-        #self.image_listbox.config(height=event.height // 30)
-        #self.image_frame.config(height=event.height // 30)
-        
-        #self.image_label.config(height=event.height // 30)
-        
-        #self.btn_flux_image.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.btn_streaming_video.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.ip_button.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.browse_button.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.delete_button.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.upload_buttonpack(fill=BOTH, padx=10, pady=10, expand=True)
+       
+
 
 
 
