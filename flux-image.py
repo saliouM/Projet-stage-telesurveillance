@@ -128,7 +128,7 @@ class FluxImage:
         host = self.entry_ip_adress.get()  # Adresse IP de votre Arduino Yun
         port = 22 # Port SSH
         username = "root"  # Nom d'utilisateur (peut être différent)
-        password = "arduinoyun"  # Mot de passe SSH
+        password = "passarduino"  # Mot de passe SSH
         
         # Commande à exécuter
         command = 'cd /mnt/sda1/server-images-stock uhttpd -h /mnt/sda1/server-images-stock -p 1024 -f'
@@ -152,7 +152,7 @@ class FluxImage:
         host = self.entry_ip_adress.get()  # Adresse IP de votre Arduino Yun
         port = 22 # Port SSH
         username = "root"  # Nom d'utilisateur (peut être différent)
-        password = "arduinoyun"  # Mot de passe SSH
+        password = "pass_arduino"  # Mot de passe SSH
         
          #Commande pour arrêter le processus mjpg_streamer
         stop_command = "kill $(pgrep uhttpd)"
@@ -276,9 +276,9 @@ class FluxImage:
     #dowload to AWS S3
     def upload_to_aws_s3(self, nameImg, file_path):
         # Configurer les informations d'authentification AWS
-        self.ACCESS_KEY_ID='AKIASUBTV6DHQRCAHROM'
-        self.ACCESS_SECRET_KEY='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'
-        bucket_name = 'bucketsaliou'
+        self.ACCESS_KEY_ID='aws_key'
+        self.ACCESS_SECRET_KEY='aws_acces_secret'
+        bucket_name = 'exempleBuket_name'
 
         s3 = boto3.client('s3', aws_access_key_id=self.ACCESS_KEY_ID, aws_secret_access_key=self.ACCESS_SECRET_KEY)
 
@@ -349,24 +349,7 @@ class FluxImage:
             img = Image.open(image_path)
             img = img.resize((600, 400))
             self.image = ImageTk.PhotoImage(img)
-            self.image_label.config(image=self.image)
-            
-    #Delette images      
-    #def delete_image(self,nameImg):
-            # Supprimer le fichier local après le téléversement
-            #self.result = messagebox.askyesno("Confirmation", "Êtes-vous sûr de vouloir supprimer cette image?",parent=self.root)
-            #if self.result:
-                #os.remove(nameImg)
-                #print("Image supprimée du serveur local.")
-                #messagebox.showinfo("Succes","Image supprimée du server local.",parent=self.root)  
-              
-    #def on_delete_button_click(self):
-            #selected_index = self.image_listbox .curselection()
-            #if selected_index:
-                        #self.image_name = self.image_listbox.get(selected_index[0])
-                        #self.delete_image(self.image_name)
-                        #self.list_server_images()
-                        
+            self.image_label.config(image=self.image)             
     
     #Suppression des images enrégistrée localement
     def delete_all_jpg_files(self):
@@ -399,23 +382,8 @@ class FluxImage:
     #fénètre responsive en cours d'adaptation
     def on_window_resize(self, event):
         # Ajuster les widgets en réponse au changement de taille de fenêtre
-        #self.icon_title.config(width=event.width)
         self.lbl_heure.config(width=event.width)
-        #self.lbl_ip_adress.config(width=event.width)
-        #self.input_ip.config(width=event.width  // 15)
-        #self.lbl_ip_adress.config(width=event.width)
-        #self.input_port.config(width=event.width)
-        #self.image_listbox.config(height=event.height // 30)
-        #self.image_frame.config(height=event.height // 30)
-        
-        #self.image_label.config(height=event.height // 30)
-        
-        #self.btn_flux_image.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.btn_streaming_video.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.ip_button.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.browse_button.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.delete_button.pack(fill=BOTH, padx=10, pady=10, expand=True)
-        #self.upload_buttonpack(fill=BOTH, padx=10, pady=10, expand=True)
+       
 
 
 
