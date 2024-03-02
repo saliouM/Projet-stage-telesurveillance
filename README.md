@@ -22,7 +22,7 @@ En outre, le système offre la possibilité de réaliser un streaming vidéo qui
 1. Assurez-vous que l'Arduino Yun Rev 2 est correctement connecté au capteur PIR et à la webcam USB.
 2. Chargez le code Arduino "code_arduino.ino" dans l'Arduino Yun Rev 2.
 3. Démarrez le système et observez les réactions en cas de détection de mouvement.
-4. Accédez à l'interface Python pour visualiser les images capturées et le flux vidéo.
+4. Accédez à l'interface Python pour visualiser les images capturées et le flux vidéo et aussi se servir des options de téléchargement dans le cloud AWS ou enregistrement locale.
 
 ## Structure du Projet
 
